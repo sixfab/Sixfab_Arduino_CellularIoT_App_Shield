@@ -124,13 +124,13 @@ class SixfabCellularIoT
     Function for sending AT [param #1] command to BG96. If the desired [param #2] 
     response isn't recevived, function resend the AT command wait a time as [timeout].
     
-    [no-return]
+    [return] : const char* response of AT command that received from bg96 modem
     ---
     [param #1] : const char* AT command word
     [param #2] : const char* AT desired_response word
     [param #3] : const char* AT response word
     */
-    void sendATComm(const char *, const char *); 
+    const char* sendATComm(const char *, const char *); 
 
     /*
     Function for resetting b595 module
