@@ -1,0 +1,34 @@
+#######################################
+# Syntax Coloring Map For SixfabNBIoT
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+SixfabNBIoT KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+init KEYWORD2
+resetModule	KEYWORD2
+setIPAddress KEYWORD2
+setPort KEYWORD2
+sendDataUDP KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+// Serial Ports
+BC95_AT LITERAL1
+DEBUG LITERAL1
+
+// Peripheral Pin Definings
+USER_BUTTON LITERAL1
+USER_LED LITERAL1
+BC95_ENABLE LITERAL1
+ALS_PT19_PIN LITERAL1
+RELAY LITERAL1
