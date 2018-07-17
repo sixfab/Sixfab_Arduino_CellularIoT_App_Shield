@@ -1,0 +1,1 @@
+This is library for Sixfab Arduino Cellular IoT Shield and Sixfab Arduino Cellular IoT Application Shield.
