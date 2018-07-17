@@ -277,27 +277,13 @@ const char* SixfabCellularIoT::getFixedLocation()
 // fuction for sending data via udp.
 void SixfabCellularIoT::sendDataUDP(const char *data)
 {
-  char compose[DATA_COMPOSE_LEN]="";
-  char data_hex[DATA_COMPOSE_LEN];
-  char data_len[DATA_LEN_LEN];
-  
-  for(int i= 0; i<strlen(data); i++){
-    sprintf(data_hex+i*2, "%02X", data[i]);
-    }  
 
-  sprintf(data_len, "%d", strlen(data));
-  strcat(compose, "AT+NSOST=0,");
-  strcat(compose, ip_address);
-  strcat(compose, ",");
-  strcat(compose, port_number);
-  strcat(compose, ",");
-  strcat(compose, data_len);
-  strcat(compose, ",");
-  strcat(compose, data_hex);
-  DEBUG.print("\n"); 
-  DEBUG.println(compose);
-  
-  sendATComm(compose,"OK\r\n");
+}
+
+// fuction for sending data via udp.
+void SixfabCellularIoT::sendDataTCP(const char *data)
+{
+
 }
 
 /******************************************************************************************
