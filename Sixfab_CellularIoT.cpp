@@ -87,7 +87,7 @@ void SixfabCellularIoT::sendATCommOnce(const char *comm)
 }
 
 // function for sending at command to BG96_AT.
-void SixfabCellularIoT::sendATComm(const char *command, const char *desired_reponse)
+const char* SixfabCellularIoT::sendATComm(const char *command, const char *desired_reponse)
 {
   uint32_t timer;
   char response[AT_RESPONSE_LEN]; // module response for AT commands. 
@@ -113,6 +113,7 @@ void SixfabCellularIoT::sendATComm(const char *command, const char *desired_repo
       delay(2);
       }
       if(strstr(response, desired_reponse)){
+        return response;
         memset(response, 0 , strlen(response));
         break;
       }    
@@ -138,18 +139,18 @@ const char* SixfabCellularIoT::getIPAddress()
 
 
 // Function for getting IMEI number
-char* SixfabCellularIoT::getIMEI()
+const char* SixfabCellularIoT::getIMEI()
 {
 
 }
 
 // Function for getting firmware info
-char* SixfabCellularIoT::getFirmwareInfo()
+const char* SixfabCellularIoT::getFirmwareInfo()
 {
 
 }
 //Function for getting hardware info
-char* SixfabCellularIoT::getHardwareInfo()
+const char* SixfabCellularIoT::getHardwareInfo()
 {
 
 }
@@ -208,13 +209,13 @@ void SixfabCellularIoT::setTimeout(uint16_t new_timeout)
  ******************************************************************************************/ 
 
 //
-char* SixfabCellularIoT::getSignalQuality()
+const char* SixfabCellularIoT::getSignalQuality()
 {
   
 }
 
 //
-char* SixfabCellularIoT::getQueryNetworkInfo()
+const char* SixfabCellularIoT::getQueryNetworkInfo()
 {
 
 }
@@ -249,7 +250,25 @@ void SixfabCellularIoT::connectToOperator()
  *** GNSS Functions ***********************************************************************
  ******************************************************************************************/
 
+// Function for turning on GNSS
+void SixfabCellularIoT::turnOnGNSS()
+{
+  sendATComm("AT+QGPS=1","OK\r\n");
+}
 
+
+// Function for turning of GNSS
+void SixfabCellularIoT::turnOffGNSS()
+{
+  sendATComm("AT+QGPSEND","OK\r\n");
+}
+
+
+// Function for getting fixed location 
+const char* SixfabCellularIoT::getFixedLocation()
+{
+  return sendATComm("AT+QGPSLOC?","+QGPSLOC:");
+} 
 
 /******************************************************************************************
  *** TCP & UDP Protocols Functions ********************************************************

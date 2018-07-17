@@ -156,7 +156,7 @@ class SixfabCellularIoT
     [return] : const char* IMEI number
     [no-param]
     */
-    char* getIMEI();
+    const char* getIMEI();
 
     /*
     Function for getting firmware info
@@ -165,7 +165,7 @@ class SixfabCellularIoT
     ---
     [no-param]
     */
-    char* getFirmwareInfo();
+    const char* getFirmwareInfo();
 
     /*
     Function for getting hardware info
@@ -174,7 +174,7 @@ class SixfabCellularIoT
     ---
     [no-param]
     */
-    char* getHardwareInfo();
+    const char* getHardwareInfo();
 
     /*
     Function for setting running mode.
@@ -272,7 +272,7 @@ class SixfabCellularIoT
     ---
     [no-param]
     */
-    char* getSignalQuality();
+    const char* getSignalQuality();
 
     /*
     Function for getting query network info
@@ -281,7 +281,7 @@ class SixfabCellularIoT
     ---
     [no-param]
     */
-    char* getQueryNetworkInfo();
+    const char* getQueryNetworkInfo();
 
    /*
     Function for connecting to base station of operator
@@ -307,6 +307,34 @@ class SixfabCellularIoT
 /******************************************************************************************
  *** GNSS Functions ***********************************************************************
  ******************************************************************************************/
+
+    /*
+    Function for connecting to base station of operator
+
+    [no-return]
+    ---
+    [no-param]
+    */
+    void turnOnGNSS();
+
+    /*
+    Function for connecting to base station of operator
+
+    [no-return]
+    ---
+    [no-param]
+    */
+    void turnOffGNSS();
+
+    /*
+    Function for connecting to base station of operator
+
+    [return] : 
+    ---
+    [no-param]
+    */
+    const char* getFixedLocation();   
+    
 
 /******************************************************************************************
  *** TCP & UDP Protocols Functions ********************************************************
