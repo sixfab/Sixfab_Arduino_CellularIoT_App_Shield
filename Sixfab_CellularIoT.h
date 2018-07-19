@@ -35,6 +35,16 @@
   #define DEBUG Serial // 115200 baud rate
 #endif
 
+extern SoftwareSerial BG96_AT;
+
+// enum for setMode function
+enum {
+    AUTO_MODE = 0,
+    GSM_MODE,
+    CATM1_MODE,
+    CATNB1_MODE,
+};
+
 // Peripheral Pin Definations
 #define USER_BUTTON 6
 #define USER_LED 5
@@ -133,7 +143,7 @@ class SixfabCellularIoT
     const char* sendATComm(const char *, const char *); 
 
     /*
-    Function for resetting b595 module
+    Function for resetting bg96 module and all peripherals.
 
     [no-return]
     ---
@@ -293,18 +303,6 @@ class SixfabCellularIoT
     void connectToOperator();
 
 /******************************************************************************************
- *** Call Service Functions ***************************************************************
- ******************************************************************************************/
-
-/******************************************************************************************
- *** Short Message Service Functions ******************************************************
- ******************************************************************************************/
-
-/******************************************************************************************
- *** Packet Domain Service Functions ******************************************************
- ******************************************************************************************/
-
-/******************************************************************************************
  *** GNSS Functions ***********************************************************************
  ******************************************************************************************/
 
@@ -349,6 +347,15 @@ class SixfabCellularIoT
     */
     void sendDataUDP(const char *);
 
+    /*
+    Function for sending data via TCP protocol. 
+    First use setIPAddress and setPort functions before 
+    try to send data with this function.  
+
+    [param #1] : const char* data word
+    */
+    void sendDataTCP(const char *);
+
 /******************************************************************************************
  *** MQTT Protocol Functions **************************************************************
  ******************************************************************************************/   
@@ -372,5 +379,10 @@ class SixfabCellularIoT
     char domain_name[DOMAIN_NAME_LEN]; // domain name   
     char port_number[PORT_NUMBER_LEN]; // port number 
     uint16_t timeout = TIMEOUT; // default timeout for function and methods on this library.
+
+/******************************************************************************************
+ *** Private Functions that be used in public methods, in order to ease the operations ****
+ ******************************************************************************************/
+ 
 };
 #endif

@@ -123,6 +123,15 @@ const char* SixfabCellularIoT::sendATComm(const char *command, const char *desir
 // function for reset BG96_AT module
 void SixfabCellularIoT::resetModule()
 {
+  saveConfigurations();
+  delay(200);
+
+  digitalWrite(BG96_ENABLE,LOW);
+  delay(200);
+  digitalWrite(BG96_ENABLE,HIGH);
+  delay(200);
+
+  powerUp();
 }
 
 // Function for save configurations that be done in current session. 
@@ -131,34 +140,55 @@ void SixfabCellularIoT::saveConfigurations()
   sendATComm("AT&W","OK\r\n");
 }
 
-// function for getting ip_address
-const char* SixfabCellularIoT::getIPAddress()
-{
-  return ip_address;
-}
-
-
 // Function for getting IMEI number
 const char* SixfabCellularIoT::getIMEI()
 {
-
+  return sendATComm("AT+CGSN","OK\r\n");
 }
 
 // Function for getting firmware info
 const char* SixfabCellularIoT::getFirmwareInfo()
 {
-
+  return sendATComm("AT+CGMR","OK\r\n");
 }
+
 //Function for getting hardware info
 const char* SixfabCellularIoT::getHardwareInfo()
 {
-
+  return sendATComm("AT+CGMM","OK\r\n");
 }
 
 //Function for setting running mode.
-void SixfabCellularIoT::setMode(uint8_t)
+void SixfabCellularIoT::setMode(uint8_t mode)
 {
+  if(mode == AUTO_MODE){
+    sendATComm("AT+QCFG=\"nwscanseq\",00,1","OK\r\n");
+    sendATComm("AT+QCFG=\"nwscanmode\",0,1","OK\r\n");
+    sendATComm("AT+QCFG=\"iotopmode\",2,1","OK\r\n");
+    DEBUG.println("Modem configuration : AUTO_MODE");
+    DEBUG.println("*Priority Table (Cat.M1 -> Cat.NB1 -> GSM)");
+  }else if(mode == GSM_MODE){
+    sendATComm("AT+QCFG=\"nwscanseq\",01,1","OK\r\n");
+    sendATComm("AT+QCFG=\"nwscanmode\",1,1","OK\r\n");
+    sendATComm("AT+QCFG=\"iotopmode\",2,1","OK\r\n");
+    DEBUG.println("Modem configuration : GSM_MODE");
+  }else if(mode == CATM1_MODE){
+    sendATComm("AT+QCFG=\"nwscanseq\",02,1","OK\r\n");
+    sendATComm("AT+QCFG=\"nwscanmode\",3,1","OK\r\n");
+    sendATComm("AT+QCFG=\"iotopmode\",0,1","OK\r\n");
+    DEBUG.println("Modem configuration : CATM1_MODE");
+  }else if(mode == CATNB1_MODE){
+    sendATComm("AT+QCFG=\"nwscanseq\",03,1","OK\r\n");
+    sendATComm("AT+QCFG=\"nwscanmode\",3,1","OK\r\n");
+    sendATComm("AT+QCFG=\"iotopmode\",1,1","OK\r\n");
+    DEBUG.println("Modem configuration : CATNB1_MODE ( NB-IoT )");
+  }
+}
 
+// function for getting ip_address
+const char* SixfabCellularIoT::getIPAddress()
+{
+  return ip_address;
 }
 
 // function for setting ip_address
@@ -211,13 +241,13 @@ void SixfabCellularIoT::setTimeout(uint16_t new_timeout)
 //
 const char* SixfabCellularIoT::getSignalQuality()
 {
-  
+  return sendATComm("AT+CSQ","OK\r\n");
 }
 
 //
 const char* SixfabCellularIoT::getQueryNetworkInfo()
 {
-
+  return sendATComm("AT+QNWINFO","OK\r\n");
 }
 
 // connect to base station of operator
@@ -225,26 +255,9 @@ void SixfabCellularIoT::connectToOperator()
 {
   DEBUG.println("Trying to connect base station of operator...");
   sendATComm("AT+CGATT?","+CGATT:1\r\n");
-  sendATComm("AT+CSQ","OK\r\n"); 
+  
+  getSignalQuality(); 
 }
-
-/******************************************************************************************
- *** Call Service Functions ***************************************************************
- ******************************************************************************************/
-
-
-
-/******************************************************************************************
- *** Short Message Service Functions ******************************************************
- ******************************************************************************************/
-
-
-
-/******************************************************************************************
- *** Packet Domain Service Functions ******************************************************
- ******************************************************************************************/
-
-
 
 /******************************************************************************************
  *** GNSS Functions ***********************************************************************
@@ -285,18 +298,6 @@ void SixfabCellularIoT::sendDataTCP(const char *data)
 {
 
 }
-
-/******************************************************************************************
- *** MQTT Protocol Functions **************************************************************
- ******************************************************************************************/  
-
-
-
-/******************************************************************************************
- *** Peripheral Devices' Functions : Read sensors - Set Relay and LEDs ********************
- ******************************************************************************************/  
-
-
 
 /******************************************************************************************
  *** Peripheral Devices' Functions : Read sensors - Set Relay and LEDs ********************
