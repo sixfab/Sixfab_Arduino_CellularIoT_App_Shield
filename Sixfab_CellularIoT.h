@@ -61,7 +61,7 @@ enum {
 #define AT_COMM_LEN 200
 #define AT_RESPONSE_LEN 400
 #define DATA_COMPOSE_LEN 200
-#define DATA_LEN_LEN 5  
+#define DATA_LEN_LEN 3  
 
 
 
@@ -327,7 +327,7 @@ class SixfabCellularIoT
     /*
     Function for connecting to base station of operator
 
-    [return] : 
+    [return] : Fixed location. Lattitude and Longitude
     ---
     [no-param]
     */
@@ -337,6 +337,52 @@ class SixfabCellularIoT
 /******************************************************************************************
  *** TCP & UDP Protocols Functions ********************************************************
  ******************************************************************************************/
+    /* 
+    function for configurating and activating TCP context 
+
+    [no-return]
+    ---
+    [no-param]
+    */ 
+    void activateContext();
+
+    /* 
+    function for deactivating TCP context
+
+    [no-return]
+    ---
+    [no-param]
+    */ 
+    void deactivateContext();
+
+    /* 
+    function for connecting to server via TCP
+    just buffer access mode is supported for now.
+
+    [no-return]
+    ---
+    [no-param]
+    */
+    void connectToServerTCP();
+
+    /* 
+    // function for connecting to server via UDP
+
+    [no-return]
+    ---
+    [no-param]
+    */
+    void startUDPService();;
+
+
+    /* 
+    Function for closing server connection
+    
+    [no-return]
+    ---
+    [no-param]
+    */
+    void closeConnection();
 
     /*
     Function for sending data via UDP protocol. 
@@ -357,21 +403,90 @@ class SixfabCellularIoT
     void sendDataTCP(const char *);
 
 /******************************************************************************************
- *** MQTT Protocol Functions **************************************************************
- ******************************************************************************************/   
-
-/******************************************************************************************
  *** Peripheral Devices' Functions : Read sensors - Set Relay and LEDs ********************
  ******************************************************************************************/    
     
+    /* 
+    Function for reading accelerometer values.
+    
+    [no-return]
+    ---
+    [param #1] : double* acceleration on x plane
+    [param #2] : double* acceleration on y plane
+    [param #y] : double* acceleration on z plane
+    */
     void readAccel(double*, double*, double*);
+
+    /* 
+    Function for reading temperature.
+    
+    [return] : double temperature  (celcius)
+    ---
+    [no-param]
+    */
     double readTemp();
+
+    /* 
+    Function for reading humidity.
+    
+    [return] : double humidity %x
+    ---
+    [no-param]
+    */
     double readHum();
+
+    /* 
+    Function for reading raw adc data from light sensor.
+    
+    [return] : double light adc 0-1023
+    ---
+    [no-param]
+    */
     double readLux();
+
+    /* 
+    Function for turning on relay.
+    
+    [no-return]
+    ---
+    [no-param]
+    */
     void turnOnRelay();
+
+    /* 
+    Function for turning off relay.
+    
+    [no-return]
+    ---
+    [no-param]
+    */
     void turnOffRelay();
+
+    /* 
+    Function for reading button position.
+    
+    [return] : uint8_t button position 0 or 1
+    ---
+    [no-param]
+    */
     uint8_t readUserButton();
+
+    /* 
+    Function for turning on LED.
+    
+    [no-return]
+    ---
+    [no-param]
+    */
     void turnOnUserLED();
+
+    /* 
+    Function for turning off LED.
+    
+    [no-return]
+    ---
+    [no-param]
+    */
     void turnOffUserLED();
 
   private:

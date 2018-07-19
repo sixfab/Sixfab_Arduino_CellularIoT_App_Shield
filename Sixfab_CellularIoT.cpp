@@ -287,16 +287,85 @@ const char* SixfabCellularIoT::getFixedLocation()
  *** TCP & UDP Protocols Functions ********************************************************
  ******************************************************************************************/
 
-// fuction for sending data via udp.
-void SixfabCellularIoT::sendDataUDP(const char *data)
+// function for configurating and activating TCP context 
+void SixfabCellularIoT::activateContext()
 {
+  sendATComm("AT+QICSGP=1,1,\"INTERNET\",\"\",\"\",1","OK\r\n"); 
+  sendATComm("AT+QIACT=1","OK\r\n");
+}
 
+// function for deactivating TCP context 
+void SixfabCellularIoT::deactivateContext()
+{
+  sendATComm("AT+QIDEACT=1","OK\r\n");
+}
+
+// function for connecting to server via TCP
+// just buffer access mode is supported for now.
+void SixfabCellularIoT::connectToServerTCP()
+{
+  char compose[100];
+  strcat(compose, "AT+QIOPEN=1,0,\"TCP\",\"");
+  strcat(compose, ip_address);
+  strcat(compose, "\",");
+  strcat(compose, port_number);
+  strcat(compose, ",0,0");
+  
+  sendATComm(compose,"OK\r\n");
+}
+
+// function for connecting to server via UDP
+void SixfabCellularIoT::startUDPService()
+{
+  char compose[100];
+  strcat(compose, "AT+QIOPEN=1,2,\"UDP SERVICE\",\"");
+  strcat(compose, ip_address);
+  strcat(compose, "\",0,");
+  strcat(compose, port_number);
+  strcat(compose, ",0");
+  
+  sendATComm(compose,"OK\r\n");
+}
+
+// function for closing server connection
+void SixfabCellularIoT::closeConnection()
+{
+  sendATComm("AT+QICLOSE=0","OK\r\n");
 }
 
 // fuction for sending data via udp.
+void SixfabCellularIoT::sendDataUDP(const char *data)
+{
+  char compose[500];
+  char data_len[3];
+
+  sprintf(data_len, "%d", strlen(data));
+
+  strcat(compose, "AT+QISEND=2,");
+  strcat(compose, data_len);
+  strcat(compose, ",\"");
+  strcat(compose, ip_address);
+  strcat(compose, "\",");
+  strcat(compose, port_number);
+
+  sendATComm(compose,">");
+  sendATComm(data,"SEND OK\r\n");
+}
+
+// fuction for sending data via tcp.
+// just buffer access mode is supported for now.
 void SixfabCellularIoT::sendDataTCP(const char *data)
 {
+  char compose[500];
+  char data_len[3];
 
+  sprintf(data_len, "%d", strlen(data));
+
+  strcat(compose, "AT+QISEND=0,");
+  strcat(compose, data_len);
+
+  sendATComm(compose,">");
+  sendATComm(data,"SEND OK\r\n");
 }
 
 /******************************************************************************************
