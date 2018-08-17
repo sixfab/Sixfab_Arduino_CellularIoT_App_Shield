@@ -1,0 +1,40 @@
+
+*** CME ERRORS ***
+
+0 - Phone failure
+1 - No connection to phone
+2 - Phone-adaptor link reserved
+3 - Operation not allowed
+4 - Operation not suppor+ted
+5 - PH-SIM PIN required
+6 - PH-FSIM PIN required
+7 - PH-FSIM PUK required
+10 - (U)SIM not inserted
+11 - (U)SIM PIN required
+12 - (U)SIM PUK required
+13 - (U)SIM failure
+14 - (U)SIM busy
+15 - (U)SIM wrong
+16 - Incorrect password
+17 - (U)SIM PIN2 required
+18 - (U)SIM PUK2 required
+20 - Memory full
+21 - Invalid index
+22 - Not found
+23 - Memory failure
+24 - Text string too long
+25 - Invalid characters in text string
+26 - Dial string too long
+27 - Invalid characters in dial string
+30 - No network service
+31 - Network timeout
+32 - Network not allowed - emergency calls only
+40 - Network personalization PIN required
+41 - Network personalization PUK required
+42-  Network subset personalization PIN required
+43 - Network subset personalization PUK required
+44 - Service provider personalization PIN required
+45 - Service provider personalization PUK required
+46 - Corporate personalization PIN required
+47 - Corporate personalization PUK required
+

@@ -1,0 +1,52 @@
+
+// BG96 AT COMMANDS
+
+*** MODE SELECTION ***
+// 
+AT+QCFG="nwscanseq",00,1
+AT+QCFG="nwscanseq",01,1
+AT+QCFG="nwscanseq",02,1
+AT+QCFG="nwscanseq",03,1
+
+//
+AT+QCFG="nwscanmode",0,1
+AT+QCFG="nwscanmode",1,1
+AT+QCFG="nwscanmode",3,1
+
+//
+AT+QCFG="iotopmode",0,1
+AT+QCFG="iotopmode",1,1
+AT+QCFG="iotopmode",2,1
+
+*** NETWORK ***
+AT+CGATT?
+AT+CREG?
+AT+COPS?
+AT+CSQ
+AT+COPN
+
+*** UDP ***
+AT+QICSGP=1
+AT+QIACT=1
+AT+QIDEACT=1
+AT+QIOPEN=1,1,"UDP SERVICE","176.42.201.107",0,4005,0
+AT+QISTATE=0,1
+AT+QISEND=1,11,"176.42.201.107",4000
+AT+QICLOSE=1
+
+*** TCP ***
+AT+QICSGP=1
+AT+QIACT=1
+AT+QIDEACT=1
+AT+QISTATE=0,1
+AT+QICLOSE=1
+
+* buffer access mode
+AT+QIOPEN=1,1,"TCP","176.42.201.107",4000,0,0
+AT+QISEND=1,11
+
+* transparent access mode
+AT+QIOPEN=1,0,"TCP","176.42.201.107",4000,0,2
+<All data got from COM port will be sent to internet directly>
+
+
