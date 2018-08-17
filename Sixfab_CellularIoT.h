@@ -52,6 +52,9 @@ enum {
 #define ALS_PT19_PIN A1
 #define RELAY A0
 #define BG96_POWERKEY A2 
+#define STATUS A3 
+#define AP_READY 7
+#define RING_INDICATOR 8
 
 // Constants  
 #define TIMEOUT 1000
@@ -63,7 +66,32 @@ enum {
 #define DATA_COMPOSE_LEN 200
 #define DATA_LEN_LEN 3  
 
+// LTE Bands
+#define LTE_B1 "1"
+#define LTE_B2 "2"
+#define LTE_B3 "4"
+#define LTE_B4 "8"
+#define LTE_B5 "10"
+#define LTE_B8 "80"
+#define LTE_B12 "800"
+#define LTE_B13 "1000"
+#define LTE_B18 "20000"
+#define LTE_B19 "40000"
+#define LTE_B20 "80000"
+#define LTE_B26 "2000000"
+#define LTE_B28 "8000000"
+#define LTE_B39 "4000000000" // catm1 only
+#define LTE_CATM1_ANY "400A0E189F"
+#define LTE_CATNB1_ANY "A0E189F"
+#define LTE_NO_CHANGE "40000000"
 
+// GSM Bands
+#define GSM_NO_CHANGE "00000000"
+#define GSM_900 "00000001"
+#define GSM_1800 "00000002"
+#define GSM_850 "00000004"
+#define GSM_1900 "00000008"
+#define GSM_ANY "0000000F"
 
 class SixfabCellularIoT
 {
@@ -120,6 +148,15 @@ class SixfabCellularIoT
     [no-param]
     */
     void powerUp();
+
+        /*
+    Function for getting modem status (is powered up?).
+    
+    [return] :  uint8_t modem status (0 : powered up) - (1: powered down)
+    ---
+    [no-param]
+    */
+    uint8_t getModemStatus();
 
     /*
     Function for sending AT [param #1] command to BG96.
@@ -185,6 +222,42 @@ class SixfabCellularIoT
     [no-param]
     */
     const char* getHardwareInfo();
+
+    /*
+    Function for setting GSM Band
+
+    [no-return]
+    ---
+    [param #1] : const char* GSM Band
+    */
+    void setGSMBand(const char *);
+
+    /*
+    Function for setting Cat.M1 Band
+
+    [no-return]
+    ---
+    [param #1] : const char * Cat.M1 LTE Band
+    */
+    void setCATM1Band(const char *);
+
+    /*
+    Function for setting NB-IoT Band
+
+    [no-return]
+    ---
+    [param #1] : const char * NB_IoT LTE Band
+    */
+    void setNBIoTBand(const char *);
+
+    /*
+    Function for getting band configuration
+
+    [return] : const char* band configuration
+    ---
+    [no-param]
+    */
+    const char* getBandConfiguration();
 
     /*
     Function for setting running mode.
@@ -365,6 +438,15 @@ class SixfabCellularIoT
     */
     void connectToServerTCP();
 
+        /*
+    Function for sending data via TCP protocol. 
+    First use setIPAddress and setPort functions before 
+    try to send data with this function.  
+
+    [param #1] : const char* data word
+    */
+    void sendDataTCP(const char *);
+
     /* 
     // function for connecting to server via UDP
 
@@ -372,17 +454,7 @@ class SixfabCellularIoT
     ---
     [no-param]
     */
-    void startUDPService();;
-
-
-    /* 
-    Function for closing server connection
-    
-    [no-return]
-    ---
-    [no-param]
-    */
-    void closeConnection();
+    void startUDPService();
 
     /*
     Function for sending data via UDP protocol. 
@@ -393,14 +465,15 @@ class SixfabCellularIoT
     */
     void sendDataUDP(const char *);
 
-    /*
-    Function for sending data via TCP protocol. 
-    First use setIPAddress and setPort functions before 
-    try to send data with this function.  
-
-    [param #1] : const char* data word
+    /* 
+    Function for closing server connection
+    
+    [no-return]
+    ---
+    [no-param]
     */
-    void sendDataTCP(const char *);
+    void closeConnection();
+
 
 /******************************************************************************************
  *** Peripheral Devices' Functions : Read sensors - Set Relay and LEDs ********************
@@ -490,6 +563,8 @@ class SixfabCellularIoT
     void turnOffUserLED();
 
   private:
+    char compose[100];
+
     char ip_address[IP_ADDRESS_LEN]; //ip address       
     char domain_name[DOMAIN_NAME_LEN]; // domain name   
     char port_number[PORT_NUMBER_LEN]; // port number 
@@ -498,6 +573,16 @@ class SixfabCellularIoT
 /******************************************************************************************
  *** Private Functions that be used in public methods, in order to ease the operations ****
  ******************************************************************************************/
- 
+    /* 
+    Function for clear command buffer #private param : compose[100].
+    
+    [no-return]
+    ---
+    [no-param]
+    */
+    void clear_compose()
+    {
+        memset(compose,0,sizeof(compose));
+    }
 };
 #endif

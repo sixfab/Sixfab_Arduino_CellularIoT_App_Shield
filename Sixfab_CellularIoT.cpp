@@ -28,18 +28,22 @@ void SixfabCellularIoT::init()
 {
   // setting pin directions
   pinMode(USER_LED, OUTPUT);
-  //pinMode(RELAY, OUTPUT);
+  pinMode(RELAY, OUTPUT);
   pinMode(USER_BUTTON, INPUT);
-  //pinMode(ALS_PT19_PIN, INPUT);
+  pinMode(ALS_PT19_PIN, INPUT);
   
   enable();
-
-  powerUp();
 
   // setting serials
   BG96_AT.begin(9600);
   DEBUG.begin(115200);
   GNSS.begin(115200);
+
+  while(getModemStatus()){
+    DEBUG.println(getModemStatus());
+    powerUp();  
+    DEBUG.println(getModemStatus());
+  }
   
   DEBUG.println("Module initializing");
 
@@ -74,9 +78,16 @@ void SixfabCellularIoT::powerUp()
   digitalWrite(BG96_POWERKEY,HIGH);
   delay(500);
   digitalWrite(BG96_POWERKEY,LOW);
-  delay(6000);
+  while(getModemStatus()){}
 }
 
+// power up or down BG96 module
+uint8_t SixfabCellularIoT::getModemStatus()
+{
+  pinMode(STATUS,INPUT);
+  delay(10);
+  return digitalRead(STATUS);
+}
 
 // send at comamand to module
 void SixfabCellularIoT::sendATCommOnce(const char *comm)
@@ -156,6 +167,55 @@ const char* SixfabCellularIoT::getFirmwareInfo()
 const char* SixfabCellularIoT::getHardwareInfo()
 {
   return sendATComm("AT+CGMM","OK\r\n");
+}
+
+
+// Function for setting GSM Band
+void SixfabCellularIoT::setGSMBand(const char *gsm_band)
+{
+  strcpy(compose, "AT+QCFG=\"band\",");
+  strcat(compose, gsm_band);
+  strcat(compose, ",");
+  strcat(compose, LTE_NO_CHANGE);
+  strcat(compose, ",");
+  strcat(compose, LTE_NO_CHANGE);
+
+  sendATComm(compose,"OK\r\n");
+  clear_compose();
+}
+
+// Function for setting Cat.M1 Band
+void SixfabCellularIoT::setCATM1Band(const char *catm1_band)
+{
+  strcpy(compose, "AT+QCFG=\"band\",");
+  strcat(compose, GSM_NO_CHANGE);
+  strcat(compose, ",");
+  strcat(compose, catm1_band);
+  strcat(compose, ",");
+  strcat(compose, LTE_NO_CHANGE);
+
+  sendATComm(compose, "OK\r\n");
+  clear_compose();
+}
+
+// Function for setting NB-IoT Band
+void SixfabCellularIoT::setNBIoTBand(const char *nbiot_band)
+{
+  strcpy(compose, "AT+QCFG=\"band\",");
+  strcat(compose, GSM_NO_CHANGE);
+  strcat(compose, ",");
+  strcat(compose, LTE_NO_CHANGE);
+  strcat(compose, ",");
+  strcat(compose, nbiot_band);
+
+  sendATComm(compose,"OK\r\n");
+  clear_compose();
+}
+
+// Function for getting current band settings
+const char* SixfabCellularIoT::getBandConfiguration()
+{
+  return sendATComm("AT+QCFG=\"band\"","OK\r\n");
 }
 
 //Function for setting running mode.
@@ -254,7 +314,7 @@ const char* SixfabCellularIoT::getQueryNetworkInfo()
 void SixfabCellularIoT::connectToOperator()
 {
   DEBUG.println("Trying to connect base station of operator...");
-  sendATComm("AT+CGATT?","+CGATT:1\r\n");
+  sendATComm("AT+CGATT?","+CGATT: 1\r\n");
   
   getSignalQuality(); 
 }
@@ -290,58 +350,73 @@ const char* SixfabCellularIoT::getFixedLocation()
 // function for configurating and activating TCP context 
 void SixfabCellularIoT::activateContext()
 {
-  sendATComm("AT+QICSGP=1,1,\"INTERNET\",\"\",\"\",1","OK\r\n"); 
-  sendATComm("AT+QIACT=1","OK\r\n");
+  sendATComm("AT+QICSGP=1","OK\r\n"); 
+  delay(1000);
+  sendATComm("AT+QIACT=1","\r\n");
 }
 
 // function for deactivating TCP context 
 void SixfabCellularIoT::deactivateContext()
 {
-  sendATComm("AT+QIDEACT=1","OK\r\n");
+  sendATComm("AT+QIDEACT=1","\r\n");
 }
 
 // function for connecting to server via TCP
 // just buffer access mode is supported for now.
 void SixfabCellularIoT::connectToServerTCP()
 {
-  char compose[100];
-  strcat(compose, "AT+QIOPEN=1,0,\"TCP\",\"");
+  strcpy(compose, "AT+QIOPEN=1,1");
+  strcat(compose, ",\"TCP\",\"");
   strcat(compose, ip_address);
   strcat(compose, "\",");
   strcat(compose, port_number);
   strcat(compose, ",0,0");
-  
   sendATComm(compose,"OK\r\n");
+
+  sendATComm("AT+QISTATE=0,1","OK\r\n");
+  clear_compose();
 }
+
+// fuction for sending data via tcp.
+// just buffer access mode is supported for now.
+void SixfabCellularIoT::sendDataTCP(const char *data)
+{
+  char data_len[4];
+  sprintf(data_len, "%d", strlen(data));
+
+  strcpy(compose, "AT+QISEND=1,");
+  strcat(compose, data_len);
+
+  sendATComm(compose,">");
+  sendATComm(data,"SEND OK");
+  clear_compose();
+}
+
 
 // function for connecting to server via UDP
 void SixfabCellularIoT::startUDPService()
 {
-  char compose[100];
-  strcat(compose, "AT+QIOPEN=1,2,\"UDP SERVICE\",\"");
+  char *port = "3005";
+
+  strcpy(compose, "AT+QIOPEN=1,1,\"UDP SERVICE\",\"");
   strcat(compose, ip_address);
   strcat(compose, "\",0,");
-  strcat(compose, port_number);
+  strcat(compose, port);
   strcat(compose, ",0");
   
   sendATComm(compose,"OK\r\n");
-}
+  clear_compose();
 
-// function for closing server connection
-void SixfabCellularIoT::closeConnection()
-{
-  sendATComm("AT+QICLOSE=0","OK\r\n");
+  sendATComm("AT+QISTATE=0,1","\r\n");
 }
 
 // fuction for sending data via udp.
 void SixfabCellularIoT::sendDataUDP(const char *data)
 {
-  char compose[500];
-  char data_len[3];
-
+  char data_len[5];
   sprintf(data_len, "%d", strlen(data));
 
-  strcat(compose, "AT+QISEND=2,");
+  strcpy(compose, "AT+QISEND=1,");
   strcat(compose, data_len);
   strcat(compose, ",\"");
   strcat(compose, ip_address);
@@ -349,23 +424,14 @@ void SixfabCellularIoT::sendDataUDP(const char *data)
   strcat(compose, port_number);
 
   sendATComm(compose,">");
-  sendATComm(data,"SEND OK\r\n");
+  sendATComm(data,"SEND OK");
+  clear_compose();
 }
 
-// fuction for sending data via tcp.
-// just buffer access mode is supported for now.
-void SixfabCellularIoT::sendDataTCP(const char *data)
+// function for closing server connection
+void SixfabCellularIoT::closeConnection()
 {
-  char compose[500];
-  char data_len[3];
-
-  sprintf(data_len, "%d", strlen(data));
-
-  strcat(compose, "AT+QISEND=0,");
-  strcat(compose, data_len);
-
-  sendATComm(compose,">");
-  sendATComm(data,"SEND OK\r\n");
+  sendATComm("AT+QICLOSE=1","\r\n");
 }
 
 /******************************************************************************************
@@ -429,7 +495,3 @@ void SixfabCellularIoT::turnOffUserLED()
   digitalWrite(USER_LED, LOW);
 }
 
-
-/******************************************************************************************
- *** Private Functions that be used in public methods, in order to ease the operations ****
- ******************************************************************************************/
