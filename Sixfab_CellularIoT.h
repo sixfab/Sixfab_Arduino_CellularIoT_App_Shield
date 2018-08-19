@@ -93,6 +93,9 @@ enum {
 #define GSM_1900 "00000008"
 #define GSM_ANY "0000000F"
 
+#define SCRAMBLE_ON "0"
+#define SCRAMBLE_OFF "1"
+
 class SixfabCellularIoT
 {
   public:
@@ -258,6 +261,15 @@ class SixfabCellularIoT
     [no-param]
     */
     const char* getBandConfiguration();
+
+    /*
+    Function for setting scramble feature configuration 
+
+    [no-return]
+    ---
+    [param #1] : const char * Scramble on / off ( '0' is on, '1' is off)
+    */
+    void setScrambleConf(const char *);
 
     /*
     Function for setting running mode.

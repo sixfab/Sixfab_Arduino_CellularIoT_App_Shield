@@ -218,6 +218,16 @@ const char* SixfabCellularIoT::getBandConfiguration()
   return sendATComm("AT+QCFG=\"band\"","OK\r\n");
 }
 
+
+// Function for setting scramble feature configuration 
+void SixfabCellularIoT::setScrambleConf(const char *scramble)
+{
+  strcpy(compose, "AT+QCFG=\"nbsibscramble\",");
+  strcat(compose, scramble);
+  sendATComm(compose,"OK\r\n");
+  clear_compose();
+}
+
 //Function for setting running mode.
 void SixfabCellularIoT::setMode(uint8_t mode)
 {
