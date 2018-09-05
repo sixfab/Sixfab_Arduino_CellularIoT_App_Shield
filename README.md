@@ -24,6 +24,9 @@ The design has built-in temperature, humidity, light sensors, 3-axis acceleromet
 * Micro SIM Socket
 * UFL sockets for the external antennas
 
+# Pinout
+![Pinout](https://sixfab.com/wp-content/uploads/2018/09/ArduinoCellularIoTAppPinout.png)
+
 # Attention
 ! All data pins work with 5V reference. Any other voltage level should harm your device.
 
