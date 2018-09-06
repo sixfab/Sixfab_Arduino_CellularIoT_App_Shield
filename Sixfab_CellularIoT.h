@@ -61,9 +61,9 @@ enum {
 #define IP_ADDRESS_LEN 30
 #define DOMAIN_NAME_LEN 50
 #define PORT_NUMBER_LEN 8  
-#define AT_COMM_LEN 200
-#define AT_RESPONSE_LEN 400
-#define DATA_COMPOSE_LEN 200
+#define AT_COMM_LEN 100
+#define AT_RESPONSE_LEN 100
+#define DATA_COMPOSE_LEN 100
 #define DATA_LEN_LEN 3  
 
 // LTE Bands
@@ -204,7 +204,7 @@ class SixfabCellularIoT
     [param #3] : const char* data
 	
     */
-	const char* sendDataSixfabConnect(const char *, const char *, const char * );
+	void sendDataSixfabConnect(const char *, const char *, const char * );
 
     /*
     Function for resetting bg96 module and all peripherals.
@@ -600,6 +600,7 @@ class SixfabCellularIoT
 
   private:
     char compose[100];
+	char url[68];
 
     char ip_address[IP_ADDRESS_LEN]; //ip address       
     char domain_name[DOMAIN_NAME_LEN]; // domain name   

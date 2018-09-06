@@ -166,56 +166,6 @@ const char* SixfabCellularIoT::sendDataComm(const char *command, const char *des
   }
 }
 
-// function for sending data to BG96_AT.
-const char* SixfabCellularIoT::sendDataSixfabConnect(const char *server_url, const char *api_key, const char *data )
-{
-  char url_len[4];
-  char data_len[4];
-  char payload_len[4];
-  char url[100];
-  char payload[300];
-  
-  strcpy(compose, "AT+QHTTPCFG=\"contextid\",1");
-  sendATComm(compose,"OK");
-  
-  strcpy(compose, "AT+QHTTPCFG=\"requestheader\",1");
-  sendATComm(compose,"OK");
-  
-  strcpy(url, "https://");
-  strcat(url, server_url);
-  strcat(url, "/sixfabStage/");
-  
-  sprintf(url_len, "%d", strlen(url));
-  
-  
-  strcpy(compose, "AT+QHTTPURL=");
-  strcat(compose, url_len);
-  strcat(compose, ",80");
-  sendATComm(compose,"OK");
-  
-  sprintf(data_len, "%d", strlen(data));
-  
-  strcpy(payload, "POST /sixfabStage/ HTTP/1.1\r\nHost: ");
-  strcat(payload, server_url);
-  strcat(payload, "\r\nx-api-key: ");
-  strcat(payload, api_key);
-  strcat(payload, "\r\nContent-Type: application/json\r\nContent-Length: ");
-  strcat(payload, data_len);
-  strcat(payload, "\r\n\r\n");
-  strcat(payload, data);
-  
-  sprintf(payload_len, "%d", strlen(payload));
-  
-  strcpy(compose, "AT+QHTTPPOST=");
-  strcat(compose, payload_len);
-  strcat(compose, ",60,60");
-  sendATComm(compose,"CONNECT");
-  
-  sendDataComm(payload, "OK");
-
-  clear_compose();
-}
-
 // function for reset BG96_AT module
 void SixfabCellularIoT::resetModule()
 {
@@ -484,6 +434,102 @@ void SixfabCellularIoT::sendDataTCP(const char *data)
 
   sendATComm(compose,">");
   sendATComm(data,"SEND OK");
+  clear_compose();
+}
+
+// function for sending data to BG96_AT.
+void SixfabCellularIoT::sendDataSixfabConnect(const char *server_url, const char *api_key, const char *data )
+{
+  timeout = 20000;
+
+  char len[4];
+  
+  clear_compose();
+  
+  strcpy(compose, "AT+QHTTPCFG=\"contextid\",1");
+  sendATComm(compose,"OK\r\n");
+  
+  strcpy(compose, "AT+QHTTPCFG=\"requestheader\",1");
+  sendATComm(compose,"OK\r\n");
+  
+  strcpy(compose, "AT+QHTTPCFG=\"responseheader\",1");
+  sendATComm(compose,"OK\r\n");
+  
+  strcpy(url, "https://");
+  strcat(url, server_url);
+  strcat(url, "/sixfabStage/");
+  
+  
+  sprintf(len, "%d", strlen(url));
+  
+  
+  strcpy(compose, "AT+QHTTPURL=");
+  strcat(compose, len);
+  strcat(compose, ",80");
+  sendATComm(compose,"CONNECT\r\n");
+  sendDataComm(url, "OK\r\n");
+  
+  sprintf(len, "%d", strlen(data));
+  
+ 
+  int payload_len = 0;
+  
+  strcpy(compose,"POST /sixfabStage/ HTTP/1.1\r\nHost: ");
+  payload_len += strlen(compose);
+  
+  payload_len += strlen(server_url);
+  
+  strcpy(compose, "\r\nx-api-key: ");
+  payload_len += strlen(compose);
+  
+  payload_len += strlen(api_key);
+  
+  strcpy(compose, "\r\nContent-Type: application/json\r\nContent-Length: ");
+  payload_len += strlen(compose);
+  
+  payload_len += strlen(len);
+  
+  strcpy(compose, "\r\n\r\n");
+  payload_len += strlen(compose);
+  
+  payload_len += strlen(data);
+  
+  sprintf(len, "%d", payload_len);
+  
+  
+  strcpy(compose, "AT+QHTTPPOST=");
+  strcat(compose, len);
+  strcat(compose, ",60,60");
+  sendATComm(compose,"CONNECT\r\n");
+  
+  
+  strcpy(compose,"POST /sixfabStage/ HTTP/1.1\r\nHost: ");
+  BG96_AT.print(compose);
+  
+  strcpy(compose, server_url);
+  BG96_AT.print(compose);
+  
+  strcpy(compose, "\r\nx-api-key: ");
+  BG96_AT.print(compose);
+  
+  strcpy(compose, api_key);
+  BG96_AT.print(compose);
+  
+  strcpy(compose, "\r\nContent-Type: application/json\r\nContent-Length: ");
+  BG96_AT.print(compose);
+  
+  sprintf(len, "%d", strlen(data));
+  strcpy(compose, len);
+  BG96_AT.print(compose);
+  
+  strcpy(compose, "\r\n\r\n");
+  BG96_AT.print(compose);
+  
+  
+  strcpy(compose, data);
+  sendDataComm(compose, "OK\r\n");
+  
+
   clear_compose();
 }
 
