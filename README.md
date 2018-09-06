@@ -1,5 +1,5 @@
 # Sixfab Arduino Cellular IoT Library 
-This is library for Sixfab Arduino Cellular IoT Shield and Sixfab Arduino Cellular IoT Application Shield.
+This is library Sixfab Arduino Cellular IoT Application Shield.
 
 # Product Description
 This is a shield that has combined LTE technologies Cat.M1, Cat.NB1 (NB-IoT) and eGPRS for Arduino, based on Quectel’s BG96 module. The shield has the power of new IoT phenomenon LPWA (Low Power Wide Area) with Cat.M1 and NB-IoT connection functionalities. Besides, it also provides the function of eGPRS that be enhanced version of classical GPRS.
