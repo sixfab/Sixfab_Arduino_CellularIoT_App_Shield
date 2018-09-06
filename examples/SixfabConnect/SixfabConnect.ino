@@ -36,13 +36,13 @@ void setup() {
 
   node.deactivateContext();
   node.activateContext();
-  node.closeConnection();
-  node.connectToServerTCP();
+  //node.closeConnection();
+  //node.connectToServerTCP();
 
+
+  node.sendDataSixfabConnect(your_server, api_key, "{\"deviceId\":\"9f2e8999-1f77-4d27-9a80-4ff962e71ab3\",\"temperature\":20}" );
   sprintf(dataJSON, dataTemplate, api_key, 20); 
-
-    
-  node.sendDataSixfabConnect(your_server, api_key, dataJSON );
+  
 }
 
 // loop
