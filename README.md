@@ -37,8 +37,8 @@ The design has built-in temperature, humidity, light sensors, 3-axis acceleromet
 ** [sendSensorData](https://github.com/sixfab/Sixfab_Arduino_CellularIoT_Library/blob/master/examples/sendSensorData/sendSensorData.ino) 
 
 # Tutorials 
-** [basicUDP](https://sixfab.com/basic-udp-communication-tutorial-for-sixfab-arduino-cellular-iot-application-shield/)  
-** [sensorTest](https://sixfab.com/sensor-test-tutorial-for-sixfab-arduino-cellular-iot-application-shield/)  
+** [Basic UDP Communication Tutorial for Sixfab Arduino Cellular IoT Application Shield](https://sixfab.com/basic-udp-communication-tutorial-for-sixfab-arduino-cellular-iot-application-shield/)  
+** [Sensor Test Tutorial for Sixfab Arduino Cellular IoT Application Shield](https://sixfab.com/sensor-test-tutorial-for-sixfab-arduino-cellular-iot-application-shield/)  
 
 # Applications
 * Smart farming sensor
