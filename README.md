@@ -31,14 +31,14 @@ The design has built-in temperature, humidity, light sensors, 3-axis acceleromet
 ! All data pins work with 5V reference. Any other voltage level should harm your device.
 
 # Examples
-** [example code #1](www.github.com/blabla)  
-** [example code #2](www.github.com/blabla)  
-** [example code #3](www.github.com/blabla)  
-# Tutorials 
+** [basicUDP](https://github.com/sixfab/Sixfab_Arduino_CellularIoT_Library/blob/master/examples/basicUDP/basicUDP.ino)   
+** [sensorTest](https://github.com/sixfab/Sixfab_Arduino_CellularIoT_Library/blob/master/examples/sensorTest/sensorTest.ino)  
+** [basicTCP](https://github.com/sixfab/Sixfab_Arduino_CellularIoT_Library/blob/master/examples/basicTCP/basicTCP.ino)  
+** [sendSensorData](https://github.com/sixfab/Sixfab_Arduino_CellularIoT_Library/blob/master/examples/sendSensorData/sendSensorData.ino) 
 
-** [tutorial #1](http://sixfab.com/blabla)  
-** [tutorial #2](http://sixfab.com/blabla)  
-** [tutorial #3](http://sixfab.com/blabla)  
+# Tutorials 
+** [basicUDP](https://sixfab.com/basic-udp-communication-tutorial-for-sixfab-arduino-cellular-iot-application-shield/)  
+** [sensorTest](https://sixfab.com/sensor-test-tutorial-for-sixfab-arduino-cellular-iot-application-shield/)  
 
 # Applications
 * Smart farming sensor
