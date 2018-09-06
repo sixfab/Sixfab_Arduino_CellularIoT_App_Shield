@@ -52,6 +52,7 @@ void SixfabCellularIoT::init()
   // mma8452q init 
   accel.init();
 
+  sendATComm("AT","RDY"); 
   sendATComm("ATE1","OK\r\n"); 
   sendATComm("ATE1","OK\r\n");
   sendATComm("AT","OK\r\n");
