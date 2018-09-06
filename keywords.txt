@@ -26,6 +26,7 @@ powerUp	KEYWORD2
 getModemStatus	KEYWORD2
 sendATCommOnce	KEYWORD2
 sendATComm	KEYWORD2
+sendDataComm	KEYWORD2
 resetModule	KEYWORD2
 saveConfigurations	KEYWORD2
 getIMEI	KEYWORD2
@@ -55,6 +56,7 @@ activateContext	KEYWORD2
 deactivateContext	KEYWORD2
 connectToServerTCP	KEYWORD2
 sendDataTCP	KEYWORD2
+sendDataSixfabConnect KEYWORD2
 startUDPService	KEYWORD2
 sendDataUDP	KEYWORD2
 closeConnection	KEYWORD2
