@@ -131,6 +131,90 @@ const char* SixfabCellularIoT::sendATComm(const char *command, const char *desir
   }
 }
 
+// function for sending data to BG96_AT.
+const char* SixfabCellularIoT::sendDataComm(const char *command, const char *desired_reponse)
+{
+  uint32_t timer;
+  char response[AT_RESPONSE_LEN]; // module response for AT commands. 
+
+  memset(response, 0 , AT_RESPONSE_LEN);
+  BG96_AT.flush();
+
+  BG96_AT.print(command);
+ 
+  timer = millis();
+   while(true){
+    if(millis()-timer > timeout){
+      BG96_AT.print(command);
+      timer = millis();
+    }
+    char c;
+    int i = 0; 
+
+    while(BG96_AT.available()){
+      c = BG96_AT.read();
+      DEBUG.write(c);
+      response[i++]=c;
+      delay(2);
+      }
+      if(strstr(response, desired_reponse)){
+        return response;
+        memset(response, 0 , strlen(response));
+        break;
+      }    
+  }
+}
+
+// function for sending data to BG96_AT.
+const char* SixfabCellularIoT::sendDataSixfabConnect(const char *server_url, const char *api_key, const char *data )
+{
+  char url_len[4];
+  char data_len[4];
+  char payload_len[4];
+  char url[100];
+  char payload[300];
+  
+  strcpy(compose, "AT+QHTTPCFG=\"contextid\",1");
+  sendATComm(compose,"OK");
+  
+  strcpy(compose, "AT+QHTTPCFG=\"requestheader\",1");
+  sendATComm(compose,"OK");
+  
+  strcpy(url, "https://");
+  strcat(url, server_url);
+  strcat(url, "/sixfabStage/");
+  
+  sprintf(url_len, "%d", strlen(url));
+  
+  
+  strcpy(compose, "AT+QHTTPURL=");
+  strcat(compose, url_len);
+  strcat(compose, ",80");
+  sendATComm(compose,"OK");
+  
+  sprintf(data_len, "%d", strlen(data));
+  
+  strcpy(payload, "POST /sixfabStage/ HTTP/1.1\r\nHost: ");
+  strcat(payload, server_url);
+  strcat(payload, "\r\nx-api-key: ");
+  strcat(payload, api_key);
+  strcat(payload, "\r\nContent-Type: application/json\r\nContent-Length: ");
+  strcat(payload, data_len);
+  strcat(payload, "\r\n\r\n");
+  strcat(payload, data);
+  
+  sprintf(payload_len, "%d", strlen(payload));
+  
+  strcpy(compose, "AT+QHTTPPOST=");
+  strcat(compose, payload_len);
+  strcat(compose, ",60,60");
+  sendATComm(compose,"CONNECT");
+  
+  sendDataComm(payload, "OK");
+
+  clear_compose();
+}
+
 // function for reset BG96_AT module
 void SixfabCellularIoT::resetModule()
 {

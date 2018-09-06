@@ -181,6 +181,30 @@ class SixfabCellularIoT
     [param #3] : const char* AT response word
     */
     const char* sendATComm(const char *, const char *); 
+	
+	/*
+    Function for sending Data [param #1] to BG96. If the desired [param #2] 
+    response isn't recevived, function resend the Data wait a time as [timeout].
+    
+    [return] : const char* response of Data that received from bg96 modem
+    ---
+    [param #1] : const char* Data word
+    [param #2] : const char* Data desired_response word
+    [param #3] : const char* Data response word
+    */
+	const char* sendDataComm(const char *, const char *);
+	
+	/*
+    Function for sending data to Sixfab Connect Platform
+
+    [no-return]
+    ---
+    [param #1] : const char* server_url
+    [param #2] : const char* x-api-key
+    [param #3] : const char* data
+	
+    */
+	const char* sendDataSixfabConnect(const char *, const char *, const char * );
 
     /*
     Function for resetting bg96 module and all peripherals.
