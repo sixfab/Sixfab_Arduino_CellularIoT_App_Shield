@@ -545,7 +545,7 @@ void SixfabCellularIoT::sendDataIFTTT(const char *eventName, const char *api_key
   strcpy(compose, "AT+QHTTPCFG=\"contextid\",1");
   sendATComm(compose,"OK\r\n");
   
-  strcpy(compose, "AT+QHTTPCFG=\"requestheader\",0");
+  strcpy(compose, "AT+QHTTPCFG=\"requestheader\",1");
   sendATComm(compose,"OK\r\n");
   
   strcpy(url, "https://maker.ifttt.com/trigger/");
@@ -553,9 +553,7 @@ void SixfabCellularIoT::sendDataIFTTT(const char *eventName, const char *api_key
   strcat(url, "/with/key/");
   strcat(url, api_key);
   
-  
   sprintf(len, "%d", strlen(url));
-  
   
   strcpy(compose, "AT+QHTTPURL=");
   strcat(compose, len);
@@ -563,12 +561,76 @@ void SixfabCellularIoT::sendDataIFTTT(const char *eventName, const char *api_key
   sendATComm(compose,"CONNECT\r\n");
   sendDataComm(url, "OK\r\n");
   
-  sprintf(len, "%d", strlen(data));
+  
+  sprintf(len, "%d", strlen(url));
+  
+  
+  int payload_len = 0;
+  
+  strcpy(compose,"POST /trigger/");
+  payload_len += strlen(compose);
+  
+  strcpy(compose, eventName);
+  payload_len += strlen(compose);
+  
+  strcpy(compose, "/with/key/");
+  payload_len += strlen(compose);
+  
+  strcpy(compose, api_key);
+  payload_len += strlen(compose);
+  
+  strcpy(compose," HTTP/1.1\r\nHost: ");
+  payload_len += strlen(compose);
+  
+  strcpy(compose,"maker.ifttt.com\r\n");
+  payload_len += strlen(compose);
+  
+  strcpy(compose, "Content-Type: application/json\r\nContent-Length: ");
+  payload_len += strlen(compose);
+  
+  payload_len += strlen(len);
+  
+  strcpy(compose, "\r\n\r\n");
+  payload_len += strlen(compose);
+  
+  payload_len += strlen(data);
+  
+  sprintf(len, "%d", payload_len);
+  
   
   strcpy(compose, "AT+QHTTPPOST=");
   strcat(compose, len);
   strcat(compose, ",60,60");
   sendATComm(compose,"CONNECT\r\n");
+  
+  
+  strcpy(compose,"POST /trigger/");
+  BG96_AT.print(compose);
+  
+  strcpy(compose, eventName);
+  BG96_AT.print(compose);
+  
+  strcpy(compose, "/with/key/");
+  BG96_AT.print(compose);
+  
+  strcpy(compose, api_key);
+  BG96_AT.print(compose);
+  
+  strcpy(compose," HTTP/1.1\r\nHost: ");
+  BG96_AT.print(compose);
+  
+  strcpy(compose,"maker.ifttt.com\r\n");
+  BG96_AT.print(compose);
+  
+  strcpy(compose, "Content-Type: application/json\r\nContent-Length: ");
+  BG96_AT.print(compose);
+  
+  sprintf(len, "%d", strlen(data));
+  strcpy(compose, len);
+  BG96_AT.print(compose);
+  
+  strcpy(compose, "\r\n\r\n");
+  BG96_AT.print(compose);
   
   strcpy(compose, data);
   sendDataComm(compose, "OK\r\n");
