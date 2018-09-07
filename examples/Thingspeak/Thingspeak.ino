@@ -7,7 +7,7 @@
 
 SixfabCellularIoT node;
 
-char api_key[] = "3EHEKVIHWCZELJF7"; // change with api-key
+char api_key[] = "XXXXXXXXXXXXXXX"; // change with api-key
 
 char dataTemplate[] ="field1=%d";
 
