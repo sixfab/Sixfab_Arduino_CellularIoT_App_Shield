@@ -7,9 +7,9 @@
 
 SixfabCellularIoT node;
 
-char your_server[] = "w8w35wd172.execute-api.us-east-1.amazonaws.com"; // change with server url
-char api_key[] = "MqS7qFe6Az45xbzSZCMC03jK2vLEbHAN6Mfs0BSM"; // change with x-api-key
-char device_id[] = "9f2e8999-1f77-4d27-9a80-4ff962e71ab3"; //change with deviceId
+char your_server[] = "XXXXXXXXXXXXXXXXXXXXXXXX"; // change with server url
+char api_key[] = "XXXXXXXXXXXXXXXXXX"; // change with x-api-key
+char device_id[] = "XXXXXXXXXXXXXXXXXXXXX"; //change with deviceId
 
 char dataTemplate[] ="{\"deviceId\":\"%s\",\"temperature\":%d}";
 
@@ -36,12 +36,9 @@ void setup() {
 
   node.deactivateContext();
   node.activateContext();
-  //node.closeConnection();
-  //node.connectToServerTCP();
 
-
-  node.sendDataSixfabConnect(your_server, api_key, "{\"deviceId\":\"9f2e8999-1f77-4d27-9a80-4ff962e71ab3\",\"temperature\":20}" );
   sprintf(dataJSON, dataTemplate, api_key, 20); 
+  node.sendDataSixfabConnect(your_server, api_key, dataJSON );
   
 }
 
