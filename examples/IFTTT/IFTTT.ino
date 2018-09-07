@@ -10,7 +10,7 @@ SixfabCellularIoT node;
 char event_name[] = "sixfabPost"; // change with IFTTT event name
 char api_key[] = "beAwFus9EZr0RoS_vR8HnQ"; // change with x-api-key
 
-char dataTemplate[] ="{\"Value1\":\"%d\"}";
+char dataTemplate[] ="{\"value1\":\"%d\"}";
 
 char dataJSON[100];
 
@@ -39,7 +39,7 @@ void setup() {
   //node.connectToServerTCP();
 
 
-  sprintf(dataJSON, dataTemplate, 20);
+  sprintf(dataJSON, dataTemplate, 22);
   node.sendDataIFTTT(event_name, api_key, dataJSON );
   
 }
