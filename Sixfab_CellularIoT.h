@@ -193,18 +193,6 @@ class SixfabCellularIoT
     [param #3] : const char* Data response word
     */
 	const char* sendDataComm(const char *, const char *);
-	
-	/*
-    Function for sending data to Sixfab Connect Platform
-
-    [no-return]
-    ---
-    [param #1] : const char* server_url
-    [param #2] : const char* x-api-key
-    [param #3] : const char* data
-	
-    */
-	void sendDataSixfabConnect(const char *, const char *, const char * );
 
     /*
     Function for resetting bg96 module and all peripherals.
@@ -482,6 +470,30 @@ class SixfabCellularIoT
     [param #1] : const char* data word
     */
     void sendDataTCP(const char *);
+	
+	/*
+    Function for sending data to Sixfab Connect Platform
+
+    [no-return]
+    ---
+    [param #1] : const char* server_url
+    [param #2] : const char* x-api-key
+    [param #3] : const char* data
+	
+    */
+	void sendDataSixfabConnect(const char *, const char *, const char * );
+	
+	/*
+    Function for sending data to Sixfab Connect Platform
+
+    [no-return]
+    ---
+    [param #1] : const char* event_name
+    [param #2] : const char* api-key
+    [param #3] : const char* data
+	
+    */
+	void sendDataIFTTT(const char *eventName, const char *api_key, const char *data );
 
     /* 
     // function for connecting to server via UDP

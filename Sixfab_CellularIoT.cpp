@@ -533,6 +533,50 @@ void SixfabCellularIoT::sendDataSixfabConnect(const char *server_url, const char
   clear_compose();
 }
 
+// function for sending data to BG96_AT.
+void SixfabCellularIoT::sendDataIFTTT(const char *eventName, const char *api_key, const char *data )
+{
+  timeout = 20000;
+
+  char len[4];
+  
+  clear_compose();
+  
+  strcpy(compose, "AT+QHTTPCFG=\"contextid\",1");
+  sendATComm(compose,"OK\r\n");
+  
+  strcpy(compose, "AT+QHTTPCFG=\"requestheader\",0");
+  sendATComm(compose,"OK\r\n");
+  
+  strcpy(url, "https://maker.ifttt.com/trigger/");
+  strcat(url, eventName);
+  strcat(url, "/with/key/");
+  strcat(url, api_key);
+  
+  
+  sprintf(len, "%d", strlen(url));
+  
+  
+  strcpy(compose, "AT+QHTTPURL=");
+  strcat(compose, len);
+  strcat(compose, ",80");
+  sendATComm(compose,"CONNECT\r\n");
+  sendDataComm(url, "OK\r\n");
+  
+  sprintf(len, "%d", strlen(data));
+  
+  strcpy(compose, "AT+QHTTPPOST=");
+  strcat(compose, len);
+  strcat(compose, ",60,60");
+  sendATComm(compose,"CONNECT\r\n");
+  
+  strcpy(compose, data);
+  sendDataComm(compose, "OK\r\n");
+  
+
+  clear_compose();
+}
+
 
 // function for connecting to server via UDP
 void SixfabCellularIoT::startUDPService()
