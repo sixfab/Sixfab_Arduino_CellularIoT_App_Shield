@@ -10,7 +10,7 @@ SixfabCellularIoT node;
 char event_name[] = "sixfabPost"; // change with IFTTT event name
 char api_key[] = "beAwFus9EZr0RoS_vR8HnQ"; // change with x-api-key
 
-char dataTemplate[] ="{\"value\":\"%d\"}";
+char dataTemplate[] ="{\"Value1\":\"%d\"}";
 
 char dataJSON[100];
 
