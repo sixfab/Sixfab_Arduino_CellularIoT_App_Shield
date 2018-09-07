@@ -57,6 +57,8 @@ deactivateContext	KEYWORD2
 connectToServerTCP	KEYWORD2
 sendDataTCP	KEYWORD2
 sendDataSixfabConnect KEYWORD2
+sendDataIFTTT KEYWORD2
+sendDataThingspeak KEYWORD2
 startUDPService	KEYWORD2
 sendDataUDP	KEYWORD2
 closeConnection	KEYWORD2
