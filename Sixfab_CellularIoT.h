@@ -494,6 +494,17 @@ class SixfabCellularIoT
 	
     */
 	void sendDataIFTTT(const char *eventName, const char *api_key, const char *data );
+	
+	/*
+    Function for sending data to Sixfab Connect Platform
+
+    [no-return]
+    ---
+    [param #1] : const char* api-key
+    [param #2] : const char* data
+	
+    */
+	void sendDataThingspeak(const char *api_key, const char *data );
 
     /* 
     // function for connecting to server via UDP

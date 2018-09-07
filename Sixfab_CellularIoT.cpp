@@ -640,6 +640,39 @@ void SixfabCellularIoT::sendDataIFTTT(const char *eventName, const char *api_key
 }
 
 
+// function for sending data to BG96_AT.
+void SixfabCellularIoT::sendDataThingspeak(const char *api_key, const char *data )
+{
+  timeout = 20000;
+
+  char len[4];
+  
+  clear_compose();
+  
+  strcpy(compose, "AT+QHTTPCFG=\"contextid\",1");
+  sendATComm(compose,"OK\r\n");
+  
+  strcpy(compose, "AT+QHTTPCFG=\"requestheader\",0");
+  sendATComm(compose,"OK\r\n");
+  
+  strcpy(url, "https://api.thingspeak.com/update?api_key=");
+  strcat(url, api_key);
+  strcat(url, "&");
+  strcat(url, data);
+  
+  sprintf(len, "%d", strlen(url));
+  
+  strcpy(compose, "AT+QHTTPURL=");
+  strcat(compose, len);
+  strcat(compose, ",80");
+  sendATComm(compose,"CONNECT\r\n");
+  sendDataComm(url, "OK\r\n");
+  
+  sendATComm("AT+QHTTPGET=80","+QHTTPGET");
+
+  clear_compose();
+}
+
 // function for connecting to server via UDP
 void SixfabCellularIoT::startUDPService()
 {
