@@ -6,7 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-SixfabCellularIoT	KEYWORD1	
+SixfabCellularIoT	KEYWORD1
 DEBUG	KEYWORD1
 GNSS	KEYWORD1
 compose	KEYWORD1
@@ -56,9 +56,9 @@ activateContext	KEYWORD2
 deactivateContext	KEYWORD2
 connectToServerTCP	KEYWORD2
 sendDataTCP	KEYWORD2
-sendDataSixfabConnect KEYWORD2
-sendDataIFTTT KEYWORD2
-sendDataThingspeak KEYWORD2
+sendDataSixfabConnect	KEYWORD2
+sendDataIFTTT	KEYWORD2
+sendDataThingspeak	KEYWORD2
 startUDPService	KEYWORD2
 sendDataUDP	KEYWORD2
 closeConnection	KEYWORD2
