@@ -83,15 +83,15 @@ enum {
 #define LTE_B39 "4000000000" // catm1 only
 #define LTE_CATM1_ANY "400A0E189F"
 #define LTE_CATNB1_ANY "A0E189F"
-#define LTE_NO_CHANGE "40000000"
+#define LTE_NO_CHANGE "0"
 
 // GSM Bands
-#define GSM_NO_CHANGE "00000000"
-#define GSM_900 "00000001"
-#define GSM_1800 "00000002"
-#define GSM_850 "00000004"
-#define GSM_1900 "00000008"
-#define GSM_ANY "0000000F"
+#define GSM_NO_CHANGE "0"
+#define GSM_900 "1"
+#define GSM_1800 "2"
+#define GSM_850 "4"
+#define GSM_1900 "8"
+#define GSM_ANY "f"
 
 #define SCRAMBLE_ON "0"
 #define SCRAMBLE_OFF "1"

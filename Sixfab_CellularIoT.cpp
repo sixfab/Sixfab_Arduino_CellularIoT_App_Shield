@@ -46,13 +46,13 @@ void SixfabCellularIoT::init()
   }
   
   DEBUG.println("Module initializing");
+  delay(500); // wait until module ready.
 
   // HDC1080 begin
   hdc1080.begin(0x40);
   // mma8452q init 
   accel.init();
 
-  sendATComm("AT","RDY"); 
   sendATComm("ATE1","OK\r\n"); 
   sendATComm("ATE1","OK\r\n");
   sendATComm("AT","OK\r\n");
