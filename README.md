@@ -1,4 +1,4 @@
-# Sixfab Arduino Cellular IoT Library 
+# Sixfab Arduino CellularIoT Shield
 This is library [Sixfab Arduino Cellular IoT Application Shield](https://sixfab.com/product/arduino-cellular-iot-application-shield/).
 
 # Examples
