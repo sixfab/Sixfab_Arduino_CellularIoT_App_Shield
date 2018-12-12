@@ -760,7 +760,7 @@ void SixfabCellularIoT::turnOffRelay()
 //
 uint8_t SixfabCellularIoT::readUserButton()
 {
-  digitalRead(USER_BUTTON);
+  return digitalRead(USER_BUTTON);
 }
 
 //
