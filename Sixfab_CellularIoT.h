@@ -100,6 +100,14 @@ class SixfabCellularIoT
 {
   public:
 
+     char compose[100];
+    char url[68];
+
+    char ip_address[IP_ADDRESS_LEN]; //ip address       
+    char domain_name[DOMAIN_NAME_LEN]; // domain name   
+    char port_number[PORT_NUMBER_LEN]; // port number 
+    uint16_t timeout = TIMEOUT; // default timeout for function and methods on this library.
+    
     /*
     Default constructer with no parameter
 
@@ -533,6 +541,74 @@ class SixfabCellularIoT
     */
     void closeConnection();
 
+    /* 
+    Function for turning on LED.
+    
+    [no-return]
+    ---
+    [no-param]
+    */
+    void turnOnUserLED();
+
+    /* 
+    Function for turning off LED.
+    
+    [no-return]
+    ---
+    [no-param]
+    */
+    void turnOffUserLED();
+
+    /* 
+    Function for reading button position.
+    
+    [return] : uint8_t button position 0 or 1
+    ---
+    [no-param]
+    */
+    uint8_t readUserButton();
+
+/******************************************************************************************
+ *** Private Functions that be used in public methods, in order to ease the operations ****
+ ******************************************************************************************/
+    /* 
+    Function for clear command buffer #private param : compose[100].
+    
+    [no-return]
+    ---
+    [no-param]
+    */
+    void clear_compose()
+    {
+        memset(compose,0,sizeof(compose));
+    }
+};
+
+// Sub class inheriting from Base Class(Parent) 
+class SixfabCellularIoTApp : public SixfabCellularIoT 
+{ 
+    public: 
+    
+    /*
+    Default constructer with no parameter
+
+    [no-return]
+    ---
+    [no-param]
+    */
+    SixfabCellularIoTApp();
+
+    /*
+    Function for initializing module and peripherals
+    This function do things below:
+    * enables BG96 module
+    * sets pin directions
+
+    [no-return]
+    ---
+    [no-param]
+    */
+    void init(); // initialize
 
 /******************************************************************************************
  *** Peripheral Devices' Functions : Read sensors - Set Relay and LEDs ********************
@@ -592,57 +668,6 @@ class SixfabCellularIoT
     ---
     [no-param]
     */
-    void turnOffRelay();
-
-    /* 
-    Function for reading button position.
-    
-    [return] : uint8_t button position 0 or 1
-    ---
-    [no-param]
-    */
-    uint8_t readUserButton();
-
-    /* 
-    Function for turning on LED.
-    
-    [no-return]
-    ---
-    [no-param]
-    */
-    void turnOnUserLED();
-
-    /* 
-    Function for turning off LED.
-    
-    [no-return]
-    ---
-    [no-param]
-    */
-    void turnOffUserLED();
-
-  private:
-    char compose[100];
-	char url[68];
-
-    char ip_address[IP_ADDRESS_LEN]; //ip address       
-    char domain_name[DOMAIN_NAME_LEN]; // domain name   
-    char port_number[PORT_NUMBER_LEN]; // port number 
-    uint16_t timeout = TIMEOUT; // default timeout for function and methods on this library.
-
-/******************************************************************************************
- *** Private Functions that be used in public methods, in order to ease the operations ****
- ******************************************************************************************/
-    /* 
-    Function for clear command buffer #private param : compose[100].
-    
-    [no-return]
-    ---
-    [no-param]
-    */
-    void clear_compose()
-    {
-        memset(compose,0,sizeof(compose));
-    }
-};
+    void turnOffRelay();    
+}; 
 #endif

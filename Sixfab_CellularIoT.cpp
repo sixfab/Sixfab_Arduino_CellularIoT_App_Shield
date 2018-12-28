@@ -19,12 +19,46 @@ SixfabCellularIoT::SixfabCellularIoT()
 
 }
 
+// default
+SixfabCellularIoTApp::SixfabCellularIoTApp()
+{
+
+}
+
 /******************************************************************************************
  *** Base Functions : Set or Clear Hardwares - Status Controls - Helper AT Functions  *****
  ******************************************************************************************/
 
 // function for initializing BG96 module.
 void SixfabCellularIoT::init()
+{
+  // setting pin directions
+  pinMode(USER_LED, OUTPUT);
+  pinMode(USER_BUTTON, INPUT);
+  
+  enable();
+
+  // setting serials
+  BG96_AT.begin(9600);
+  DEBUG.begin(115200);
+  GNSS.begin(115200);
+
+  while(getModemStatus()){
+    DEBUG.println(getModemStatus());
+    powerUp();  
+    DEBUG.println(getModemStatus());
+  }
+  
+  DEBUG.println("Module initializing");
+  delay(500); // wait until module ready.
+
+  sendATComm("ATE1","OK\r\n"); 
+  sendATComm("ATE1","OK\r\n");
+  sendATComm("AT","OK\r\n");
+}
+
+// function for initializing BG96 module.
+void SixfabCellularIoTApp::init()
 {
   // setting pin directions
   pinMode(USER_LED, OUTPUT);
@@ -47,11 +81,13 @@ void SixfabCellularIoT::init()
   
   DEBUG.println("Module initializing");
   delay(500); // wait until module ready.
-
+  
   // HDC1080 begin
   hdc1080.begin(0x40);
+
   // mma8452q init 
   accel.init();
+
   delay(3000);
   sendATComm("ATE1","OK\r\n"); 
   sendATComm("ATE1","OK\r\n");
@@ -719,7 +755,7 @@ void SixfabCellularIoT::closeConnection()
  ******************************************************************************************/  
 
 // 
-void SixfabCellularIoT::readAccel(double* ax, double* ay, double* az)
+void SixfabCellularIoTApp::readAccel(double* ax, double* ay, double* az)
 {
   accel.read();
   *ax = accel.cx;
@@ -728,31 +764,31 @@ void SixfabCellularIoT::readAccel(double* ax, double* ay, double* az)
 }
 
 //
-double SixfabCellularIoT::readTemp()
+double SixfabCellularIoTApp::readTemp()
 {
   return hdc1080.readTemperature();
 }
 
 // 
-double SixfabCellularIoT::readHum()
+double SixfabCellularIoTApp::readHum()
 {
   return hdc1080.readHumidity();
 }
 
 //
-double SixfabCellularIoT::readLux()
+double SixfabCellularIoTApp::readLux()
 {
   return analogRead(ALS_PT19_PIN);
 }
 
 //
-void SixfabCellularIoT::turnOnRelay()
+void SixfabCellularIoTApp::turnOnRelay()
 {
   digitalWrite(RELAY, HIGH);
 }
 
 //
-void SixfabCellularIoT::turnOffRelay()
+void SixfabCellularIoTApp::turnOffRelay()
 { 
   digitalWrite(RELAY, LOW);
 }
@@ -760,7 +796,7 @@ void SixfabCellularIoT::turnOffRelay()
 //
 uint8_t SixfabCellularIoT::readUserButton()
 {
-  digitalRead(USER_BUTTON);
+  return digitalRead(USER_BUTTON);
 }
 
 //
