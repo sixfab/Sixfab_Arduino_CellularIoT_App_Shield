@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map For SixfabNBIoT
+# Syntax Coloring Map For SixfabCellularIoT
 #######################################
 
 #######################################
@@ -7,6 +7,7 @@
 #######################################
 
 SixfabCellularIoT	KEYWORD1
+SixfabCellularIoTApp	KEYWORD1
 DEBUG	KEYWORD1
 GNSS	KEYWORD1
 compose	KEYWORD1
