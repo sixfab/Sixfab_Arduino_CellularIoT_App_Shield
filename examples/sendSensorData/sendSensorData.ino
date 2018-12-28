@@ -1,11 +1,15 @@
 /*
-  localHost.ino - This is basic local host example.
+  sendSensorData.ino - This example sends built-in sensor data via UDP to 
+  desired server.
+  
   Created by Yasin Kaya (selengalp), August 18, 2018.
+
+  Warning : This example could be use with only Arduino CellularIoT App Shield.
 */
 
 #include "Sixfab_CellularIoT.h"
 
-SixfabCellularIoT node;
+SixfabCellularIoTApp node;
 
 char your_ip[] = "xx.xx.xx.xx"; // change with your ip
 char your_port[] = "xxxx"; // change with your port

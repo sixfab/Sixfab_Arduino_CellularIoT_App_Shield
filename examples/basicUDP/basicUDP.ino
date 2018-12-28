@@ -1,11 +1,15 @@
 /*
-  localHost.ino - This is basic local host example.
+  basicUDP.ino - This is basic UDP example.
   Created by Yasin Kaya (selengalp), August 18, 2018.
 */
 
 #include "Sixfab_CellularIoT.h"
 
+// for Arduino CellularIoT Shield
 SixfabCellularIoT node;
+
+// for Arduino CellularIoTApp Shield  
+// SixfabCellularIoTApp node; 
 
 char your_ip[] = "xx.xx.xx.xx"; // change with your ip
 char your_port[] = "xxxx"; // change with your port

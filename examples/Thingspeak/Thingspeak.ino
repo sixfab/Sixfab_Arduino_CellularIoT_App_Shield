@@ -1,11 +1,15 @@
 /*
-  localHost.ino - This is basic local host example.
+  Thingspeak.ino - This is basic local host example.
   Created by Yasin Kaya (selengalp), August 18, 2018.
 */
 
 #include "Sixfab_CellularIoT.h"
 
+// for Arduino CellularIoT Shield
 SixfabCellularIoT node;
+
+// for Arduino CellularIoTApp Shield  
+// SixfabCellularIoTApp node;
 
 char api_key[] = "XXXXXXXXXXXXXXX"; // change with api-key
 

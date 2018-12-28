@@ -1,11 +1,13 @@
 /*
-  localHost.ino - This is basic local host example.
+  sensorTest.ino - This is basic sensor test example.
   Created by Yasin Kaya (selengalp), july 13, 2018.
+
+  Warning : This example could be use with only Arduino CellularIoT App Shield.
 */
 
 #include "Sixfab_CellularIoT.h"
 
-SixfabCellularIoT node;
+SixfabCellularIoTApp node;
 
 double ax, ay, az;
 

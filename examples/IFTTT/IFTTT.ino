@@ -1,11 +1,15 @@
 /*
-  localHost.ino - This is basic local host example.
+  IFTTT.ino
   Created by Yasin Kaya (selengalp), August 18, 2018.
 */
 
 #include "Sixfab_CellularIoT.h"
 
+// for Arduino CellularIoT Shield
 SixfabCellularIoT node;
+
+// for Arduino CellularIoTApp Shield  
+// SixfabCellularIoTApp node;
 
 char event_name[] = "XXXXXXXXXX"; // change with IFTTT event name
 char api_key[] = "XXXXXXXXXXXXXX"; // change with x-api-key

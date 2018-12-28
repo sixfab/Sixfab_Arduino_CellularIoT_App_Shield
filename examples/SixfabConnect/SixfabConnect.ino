@@ -1,11 +1,15 @@
 /*
-  localHost.ino - This is basic local host example.
+  SixfabConnect.ino
   Created by Yasin Kaya (selengalp), August 18, 2018.
 */
 
 #include "Sixfab_CellularIoT.h"
 
+// for Arduino CellularIoT Shield
 SixfabCellularIoT node;
+
+// for Arduino CellularIoTApp Shield  
+// SixfabCellularIoTApp node;
 
 char your_server[] = "XXXXXXXXXXXXXXXXXXXXXXXX"; // change with server url
 char api_key[] = "XXXXXXXXXXXXXXXXXX"; // change with x-api-key
